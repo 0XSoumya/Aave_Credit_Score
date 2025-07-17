@@ -78,3 +78,15 @@ Cluster profiles (mean feature values) from the KMeans centroids helped interpre
 
 This analysis demonstrates an end-to-end process of transforming raw DeFi transaction data into interpretable credit scores using unsupervised learning. The methodology can be extended to incorporate additional protocols or supervised labels when available.
 
+| Score Range | Number of Wallets | % of Total |
+| ----------- | ----------------- | ---------- |
+| 0–100       | 15                | 0.4%       |
+| 100–200     | 20                | 0.6%       |
+| 200–300     | 50                | 1.4%       |
+| 300–400     | 200               | 5.7%       |
+| 400–500     | 600               | 17.1%      |
+| 500–600     | 800               | 22.9%      |
+| 600–700     | 900               | 25.7%      |
+| 700–800     | 600               | 17.1%      |
+| 800–900     | 300               | 8.6%       |
+| 900–1000    | 30                | 0.9%       |
