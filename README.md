@@ -1,80 +1,81 @@
-# 🧠 Credit Score Prediction from Aave Wallet Activity
+# README.md
 
-## 📌 Problem Statement
+## Credit Scoring for Aave V2 Wallets
 
-Given historical on-chain activity of user wallets on the Aave V2 protocol, assign a **credit score (0–1000)** to each wallet that reflects its financial health and responsible behavior, without access to repayment history.
-
----
-
-## 🛠️ Approach Summary
-
-We leveraged unsupervised learning (KMeans clustering) to identify wallet behavior patterns and map them to credit score bands.
-
-### 🔄 Pipeline Overview
-
-1. **Data Loading**
-
-   * Loaded JSON-formatted data into a structured Pandas DataFrame.
-
-2. **Preprocessing & Feature Engineering**
-
-   * Extracted features from nested `actionData`.
-   * Computed wallet-level features like:
-
-     * Number of transactions
-     * Total borrowed & repaid amounts
-     * Number of liquidations, collateral usage, etc.
-
-3. **Clustering with KMeans**
-
-   * Scaled features using StandardScaler.
-   * Used Elbow method to select optimal `k=5` clusters.
-   * Mapped each cluster to a score band (100 to 900).
-
-4. **Credit Score Assignment**
-
-   * Mapped clusters to credit score bands.
-   * Smoothened scores within bands using MinMaxScaler.
-
-5. **Export**
-
-   * Saved final credit scores to `wallet_credit_scores_ml.csv`
+This repository contains a complete solution for assigning credit scores (0–1000) to wallets based on their historical Aave V2 transaction behavior.
 
 ---
 
-## 📈 Dependencies
+### 📁 Repository Structure
 
-* Python 3.8+
-* pandas
-* numpy
-* matplotlib
-* seaborn
-* scikit-learn
-
-Install using:
-
-```bash
-pip install -r requirements.txt
+```
+/ (root)
+├── task1_refactored.ipynb      # Jupyter Notebook with full analysis and code
+├── wallet_credit_scores_ml.csv # Final wallet credit scores (output)
+├── README.md                   # This file: project overview and instructions
+└── analysis.md                 # Detailed analysis and score distribution
 ```
 
 ---
 
-## 🚀 How to Run
+### 🛠️ Methodology
 
-1. Open `task1` in Jupyter Notebook.
-2. Run all cells sequentially.
-3. Final scores will be exported as `wallet_credit_scores_ml.csv`
+1. **Data Loading**
+
+   * Raw JSON file loaded using `json` and flattened via `pd.json_normalize`.
+
+2. **Preprocessing & Feature Engineering**
+
+   * Converted raw `actionData.amount` to token units (6 or 18 decimals).
+   * Computed USD value per txn: `amount_converted * assetPriceUSD`.
+   * Aggregated per wallet to derive features:
+
+     * `num_txns`, `deposit_usd`, `borrow_usd`, `repay_usd`, `net_borrow_usd`.
+     * `num_liquidations`, `num_assets`, `avg_days_between_txns`, `repay_to_borrow_ratio`.
+
+3. **Machine Learning: Unsupervised Clustering**
+
+   * Scaled features with `StandardScaler`.
+   * Used Elbow and Silhouette methods to select **k=5** clusters.
+   * Fitted `KMeans(n_clusters=5)` and assigned each wallet a cluster label.
+
+4. **Credit Score Mapping**
+
+   * Interpreted cluster centroids to understand behavior:
+
+     * Cluster 2: high-volume whales → score 950
+     * Cluster 0: solid mid-tier → score 800
+     * Cluster 1: low activity → score 600
+     * Cluster 3: over-leveraged → score 400
+     * Cluster 4: zero-value bots → score 100
+   * Smoothed band-center scores into a continuous 0–1000 range with `MinMaxScaler`.
+
+5. **Visualization & Analysis**
+
+   * Elbow and Silhouette plots; feature distribution histograms; cluster profiles heatmap.
+   * Score distribution bar chart (bins: 0–100, 100–200, …, 900–1000).
 
 ---
 
-## 🤔 Assumptions & Notes
+### 🚀 Running the Notebook
 
-* Data contains wallets from the Aave V2 protocol.
-* No direct credit history is used—only transaction patterns.
-* Clustering is an approximation of behavior segmentation.
+1. Open `task1_refactored.ipynb` in Jupyter Lab or Notebook.
+2. Ensure dependencies are installed:
+
+   ```bash
+   pip install pandas numpy seaborn scikit-learn matplotlib
+   ```
+3. Run all cells sequentially.
+4. The final CSV `wallet_credit_scores_ml.csv` will be generated in the root.
 
 ---
 
-## 📬 Contact
+### 📋 Output File
 
-For questions, reach out to the author via GitHub issues.
+* `wallet_credit_scores_ml.csv`: two columns (`wallet`, `credit_score_ml`) for each wallet.
+
+---
+
+### 🤝 Contact
+
+For questions or issues, please open an issue on this GitHub repository.
