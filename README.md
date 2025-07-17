@@ -73,9 +73,3 @@ This repository contains a complete solution for assigning credit scores (0–10
 ### 📋 Output File
 
 * `wallet_credit_scores_ml.csv`: two columns (`wallet`, `credit_score_ml`) for each wallet.
-
----
-
-### 🤝 Contact
-
-For questions or issues, please open an issue on this GitHub repository.
