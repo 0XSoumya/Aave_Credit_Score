@@ -10,8 +10,8 @@ This repository contains a complete solution for assigning credit scores (0–10
 
 ```
 / (root)
-├── task1_refactored.ipynb      # Jupyter Notebook with full analysis and code
-├── wallet_credit_scores_ml.csv # Final wallet credit scores (output)
+├── task.ipynb      # Jupyter Notebook with full analysis and code
+├── wallet_credit_scores_ml.zip # Final wallet credit scores (output)
 ├── README.md                   # This file: project overview and instructions
 └── analysis.md                 # Detailed analysis and score distribution
 ```
